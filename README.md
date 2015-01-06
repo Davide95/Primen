@@ -21,5 +21,7 @@ How to Engage, Contribute and Provide Feedback
 License
 ==================
 This project is licensed under the [MIT license](LICENSE).
+
 BigIntegerExtender is available as oper-source software under the [MIT license](BigintegerExtender LICENSE).
+
 MPI.NET is available as open-source software under the [Boost Software License](http://www.boost.org/users/license.html), which is a BSD-like license.
