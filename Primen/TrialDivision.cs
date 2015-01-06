@@ -25,7 +25,7 @@ namespace Primen
         /// <summary>
         /// Factorizes the key.
         /// </summary>
-        /// <returns>If it is the root rank it returns one factor, otherwise 0.</returns>
+        /// <returns>If it is the root rank returns one factor, otherwise 0.</returns>
         public BigInteger Factorization()
         {
             // Zero and one can't be factorized.
@@ -51,7 +51,7 @@ namespace Primen
         /// <summary>
         /// Uses <c>MPI.NET</c> to support parallel computing.
         /// </summary>
-        /// <returns>If it is the root rank it returns one factor, otherwise 0.</returns>
+        /// <returns>If it is the root rank returns one factor, otherwise 0.</returns>
         private BigInteger MpiFactorization()
         {
             var sqrtOfN = n.Sqrt();
