@@ -4,7 +4,7 @@ Primen is an educational software written in C# that implements prime factorizat
 with distributed computing (using MPI.NET)
 and parallel computing (using System.Threading.Tasks).
 
-For example Primen can factorize a product of two prime numbers in order to obtain the private key from the public key.
+For example Primen can factorize a product of two prime numbers in order to obtain an RSA private key from a public key.
 
 How to Engage, Contribute and Provide Feedback
 ==================
