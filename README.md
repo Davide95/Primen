@@ -4,7 +4,7 @@ Primen is an educational software written in C# that implements prime factorizat
 with distributed computing (using MPI.NET)
 and parallel computing (using System.Threading.Tasks).
 
-For example Primen can factorize a product of two prime numbers in order to obtain the private key from the public key.
+For example Primen can factorize a product of two prime numbers in order to obtain an RSA private key from a public key.
 
 How to Engage, Contribute and Provide Feedback
 ==================
@@ -24,4 +24,4 @@ This project is licensed under the [MIT license](LICENSE).
 
 BigIntegerExtender is available as oper-source software under the [MIT license](BigintegerExtender LICENSE).
 
-MPI.NET is available as open-source software under the [Boost Software License](http://www.boost.org/users/license.html), which is a BSD-like license.
+MPI.NET is available as open-source software under the [Boost Software License](MPI.NET LICENSE), which is a BSD-like license.
