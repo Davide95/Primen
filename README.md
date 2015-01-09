@@ -6,6 +6,12 @@ and parallel computing (using System.Threading.Tasks).
 
 For example Primen can factorize a product of two prime numbers in order to obtain an RSA private key from a public key.
 
+How to use it
+==================
+Before using it, you have to install:
+* [Windows HPC Server 2008](http://www.microsoft.com/en-us/download/details.aspx?id=6847).
+* [MPI.NET Runtime](http://www.osl.iu.edu/research/mpi.net/files/1.0.0/MPI.NET%20Runtime.msi) in production or [MPI.NET SDK](http://www.osl.iu.edu/research/mpi.net/files/1.0.0/MPI.NET%20SDK.msi) for developing.
+
 How to Engage, Contribute and Provide Feedback
 ==================
 1. If you want to contribute, make sure that there is a corresponding issue for your change first. If there is none, create one.
