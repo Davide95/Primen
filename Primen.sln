@@ -7,18 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Primen", "Primen\Primen.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6D647908-60E4-40C0-985E-080113094E0C}"
 	ProjectSection(SolutionItems) = preProject
-		BigintegerExtender LICENSE = BigintegerExtender LICENSE
 		LICENSE = LICENSE
-		MPI.NET LICENSE = MPI.NET LICENSE
 		README.md = README.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DLLs", "DLLs", "{EA2B7F7F-A32C-4D12-8A3A-5BFA6E524958}"
-	ProjectSection(SolutionItems) = preProject
-		DLLs\BigIntegerExtender.dll = DLLs\BigIntegerExtender.dll
-		DLLs\BigIntegerExtender.XML = DLLs\BigIntegerExtender.XML
-		DLLs\MPI.dll = DLLs\MPI.dll
-		DLLs\MPI.XML = DLLs\MPI.XML
 	EndProjectSection
 EndProject
 Global
@@ -34,8 +24,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{EA2B7F7F-A32C-4D12-8A3A-5BFA6E524958} = {6D647908-60E4-40C0-985E-080113094E0C}
 	EndGlobalSection
 EndGlobal
