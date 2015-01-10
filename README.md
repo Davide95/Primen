@@ -16,7 +16,10 @@ Then download the last Primen relase from https://github.com/Davide95/Primen/rel
 ```PowerShell
 smpd -d
 ```
-
+After this, go to one of the machines and run
+```PowerShell
+mpiexec -hosts machine1 machine2 machineN C:\directory\when\it\was\unzipped\Primen.exe
+```
 
 How to Engage, Contribute and Provide Feedback
 ==================
