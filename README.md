@@ -11,6 +11,7 @@ How to use it
 Before using it, you have to install:
 * [Windows HPC Server 2008](http://www.microsoft.com/en-us/download/details.aspx?id=6847).
 * [MPI.NET Runtime](http://www.osl.iu.edu/research/mpi.net/files/1.0.0/MPI.NET%20Runtime.msi) in production or [MPI.NET SDK](http://www.osl.iu.edu/research/mpi.net/files/1.0.0/MPI.NET%20SDK.msi) for developing.
+
 Then download the last Primen relase from (https://github.com/Davide95/Primen/releases)[https://github.com/Davide95/Primen/releases], unzip it and start on each machine
 ```PowerShell
 smpd -d
