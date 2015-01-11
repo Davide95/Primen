@@ -61,6 +61,15 @@ namespace Primen.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to rainbowTable.db3.
+        /// </summary>
+        internal static string DbPath {
+            get {
+                return ResourceManager.GetString("DbPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error 111: Insert a valid key as a parameter..
         /// </summary>
         internal static string Error111 {

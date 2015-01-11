@@ -166,6 +166,8 @@
       <HintPath>..\..\..\..\..\Program Files (x86)\MPI.NET\Lib\MPI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.XML" />
   </ItemGroup>
@@ -177,6 +179,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RainbowTable.cs" />
+    <Compile Include="SQLite.cs" />
     <Compile Include="TrialDivision.cs" />
   </ItemGroup>
   <ItemGroup>

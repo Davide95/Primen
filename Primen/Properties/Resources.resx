@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DbPath" xml:space="preserve">
+    <value>rainbowTable.db3</value>
+  </data>
   <data name="Error111" xml:space="preserve">
     <value>Error 111: Insert a valid key as a parameter.</value>
   </data>
