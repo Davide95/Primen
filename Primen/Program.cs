@@ -4,9 +4,6 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Numerics;
-using SQLite;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace Primen
 {
@@ -16,30 +13,29 @@ namespace Primen
         {
             using (var mpi = new MPI.Environment(ref args))
             {
-                WelcomeMessage();
-
                 // The process has the highest possible priority.
                 Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.RealTime;
 
+                WelcomeMessage();
+
                 BigInteger key = readKey();
+                var trialDivision = new TrialDivision(key);
 
-                db = Database.getDatabase();
-                var factors = (from rainbowItem in db.Table<RainbowTable>()
-                             where (BigInteger)rainbowItem.Key == key
-                             select rainbowItem.Factor).Take(1);
-
-                switch(factors.Count())
+                try
                 {
-                    case 0:
-                        Factorization(key);
-                        break;
-                        
-                    default:
-                        var factor = factors.First();
+                    var factor = trialDivision.Factorization();
 
+                    if (Communicator.world.Rank == ROOT_RANK)
+                    {
                         Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
-                            Resources.FactorizationCompletedMessage, factor, key / factor));
-                        break;
+                           Resources.FactorizationCompletedMessage, factor, key / factor));
+                    }
+                }
+                catch(ArithmeticException)
+                {
+                    Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
+                        Resources.Error113, key));
+                    Communicator.world.Abort(113);
                 }
 
                 Console.ReadLine();
@@ -90,43 +86,6 @@ namespace Primen
             return key;
         }
 
-        private static void Factorization(BigInteger key)
-        {
-            var trialDivision = new TrialDivision(key);
-
-            Stopwatch rootRankWatch = null;
-            if (Communicator.world.Rank == ROOT_RANK)
-                rootRankWatch = Stopwatch.StartNew();
-
-            BigInteger factor = BigInteger.Zero;
-            try
-            {
-                factor = trialDivision.Factorization();
-            }
-            catch (ArithmeticException)
-            {
-                Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
-                    Resources.Error113, key));
-                Communicator.world.Abort(113);
-            }
-
-            if (Communicator.world.Rank == ROOT_RANK)
-            {
-                rootRankWatch.Stop();
-
-                Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
-                   Resources.FactorizationCompletedMessage, factor, key / factor));
-
-                var rainbowItem = new RainbowTable();
-                rainbowItem.Key = BigInteger.Abs(key);
-                rainbowItem.Factor = factor;
-                rainbowItem.TimeOfCalculation = rootRankWatch.Elapsed;
-                db.Insert(rainbowItem);
-            }
-        }
-
         public const int ROOT_RANK = 0;
-
-        private static Database db;
     }
 }
