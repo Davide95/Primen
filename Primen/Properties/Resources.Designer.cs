@@ -106,6 +106,15 @@ namespace Primen.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time elapsed: {0}..
+        /// </summary>
+        internal static string TimeElapsedMessage {
+            get {
+                return ResourceManager.GetString("TimeElapsedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hello, my rank is {0} and I&apos;m running on {1}..
         /// </summary>
         internal static string WelcomeMessage {

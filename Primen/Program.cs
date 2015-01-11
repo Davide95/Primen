@@ -21,15 +21,15 @@ namespace Primen
                 BigInteger key = readKey();
                 var trialDivision = new TrialDivision(key);
 
+                BigInteger factor = BigInteger.Zero;
+                Stopwatch swFactorization = null;
+
+                if (Communicator.world.Rank == ROOT_RANK)
+                    swFactorization = Stopwatch.StartNew();
+
                 try
                 {
-                    var factor = trialDivision.Factorization();
-
-                    if (Communicator.world.Rank == ROOT_RANK)
-                    {
-                        Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
-                           Resources.FactorizationCompletedMessage, factor, key / factor));
-                    }
+                    factor = trialDivision.Factorization();
                 }
                 catch(ArithmeticException)
                 {
@@ -38,7 +38,21 @@ namespace Primen
                     Communicator.world.Abort(113);
                 }
 
+                if (Communicator.world.Rank == ROOT_RANK)
+                {
+                    swFactorization.Stop();
+
+                    Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
+                       Resources.FactorizationCompletedMessage, factor, key / factor));
+
+                    Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
+                       Resources.TimeElapsedMessage, swFactorization.Elapsed));
+                }
+
+#if DEBUG
                 Console.ReadLine();
+#endif
+
                 Communicator.world.Abort(0);
             }
         }

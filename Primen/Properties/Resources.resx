@@ -132,6 +132,9 @@
   <data name="NumberOfProcessesMessage" xml:space="preserve">
     <value>Total number of processes: {0}.</value>
   </data>
+  <data name="TimeElapsedMessage" xml:space="preserve">
+    <value>Time elapsed: {0}.</value>
+  </data>
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Hello, my rank is {0} and I'm running on {1}.</value>
   </data>
