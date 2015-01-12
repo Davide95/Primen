@@ -18,7 +18,13 @@ smpd -d
 ```
 After this, go to one of the machines and run
 ```PowerShell
-mpiexec -hosts machine1 machine2 machineN C:\directory\when\it\was\unzipped\Primen.exe
+mpiexec -hosts N machine1 machine2 machineN C:\directory\when\it\was\unzipped\Primen.exe K
+```
+Where N is the number of hosts and K is the key.
+
+For example, if you have 2 hosts called mOne and mTwo, the directory when you unzipped Primen is "C:\Primen" and you wants to factorize 1000, you have to type
+```PowerShell
+mpiexec -hosts 2 mOne mTwo C:\Primen\Primen.exe 1000
 ```
 
 How to Engage, Contribute and Provide Feedback
