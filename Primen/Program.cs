@@ -11,17 +11,17 @@ namespace Primen
     {
         static void Main(string[] args)
         {
-            using (var mpi = new MPI.Environment(ref args))
+            using (new MPI.Environment(ref args))
             {
                 // The process has the highest possible priority.
                 Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.RealTime;
 
                 WelcomeMessage();
 
-                BigInteger key = readKey();
+                var key = readKey();
                 var trialDivision = new TrialDivision(key);
 
-                BigInteger factor = BigInteger.Zero;
+                BigInteger factor = TrialDivision.NOT_VALID_FACTOR;
                 Stopwatch swFactorization = null;
 
                 if (Communicator.world.Rank == ROOT_RANK)
@@ -77,7 +77,7 @@ namespace Primen
         {
             string[] args = System.Environment.GetCommandLineArgs();
 
-            if (args.Length < 2)
+            if (args.Length < (KEY_POSITION + 1))
             {
                 if (Communicator.world.Rank == ROOT_RANK)
                 {
@@ -87,7 +87,7 @@ namespace Primen
             }
 
             BigInteger key;
-            if (!BigInteger.TryParse(args[1], out key))
+            if (!BigInteger.TryParse(args[KEY_POSITION], out key))
             {
                 if (Communicator.world.Rank == ROOT_RANK)
                 { 
@@ -101,5 +101,10 @@ namespace Primen
         }
 
         public const int ROOT_RANK = 0;
+
+        /// <summary>
+        /// The key position in the command line arguments array.
+        /// </summary>
+        private const int KEY_POSITION = 1;
     }
 }

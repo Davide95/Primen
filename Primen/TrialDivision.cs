@@ -1,7 +1,5 @@
 ﻿using MPI;
-using Primen.Properties;
 using System;
-using System.Globalization;
 using System.Numerics;
 using System.Threading.Tasks;
 
@@ -29,7 +27,7 @@ namespace Primen
         public BigInteger Factorization()
         {
             // Zero and one can't be factorized.
-            if (n.IsZero || n == BigInteger.One)
+            if (n.IsZero || (n == BigInteger.One))
                 throw new ArithmeticException("NaN");
 
             else if (n == 2)
@@ -57,8 +55,8 @@ namespace Primen
             var sqrtOfN = n.Sqrt();
 
             // Rank 0 doesn't calculate anything.
-            int worldSize = Communicator.world.Size - 1;
-            int myRank = Communicator.world.Rank - 1;
+            var worldSize = Communicator.world.Size - 1;
+            var myRank = Communicator.world.Rank - 1;
             var blockSize = sqrtOfN / worldSize;
 
             // If the key is too small, it uses only tasks parallelization.
@@ -68,7 +66,7 @@ namespace Primen
                     return ParallelFactorization(MIN_FROM, sqrtOfN);
 
                 // Only root rank know the result.
-                return BigInteger.Zero;
+                return NOT_VALID_FACTOR;
             }
 
             if (Communicator.world.Rank == Program.ROOT_RANK)
@@ -134,7 +132,7 @@ namespace Primen
 
                     var result = Factorization(fromP, toP, ref loopState);
 
-                    if (!result.IsOne && !result.IsZero)
+                    if ((!result.IsOne) && (!result.IsZero))
                         factor = result;
                 });
 
@@ -171,7 +169,7 @@ namespace Primen
             while(from <= to)
             {
                 // If it is stopped, returns 0.
-                if (loopState != null && loopState.IsStopped)
+                if ((loopState != null) && (loopState.IsStopped))
                     return BigInteger.Zero;
 
                 else if((n % from).IsZero)
@@ -188,6 +186,8 @@ namespace Primen
             // If it didn't find any factor, returns 1.
             return BigInteger.One;
         }
+
+        public const int NOT_VALID_FACTOR = 0;
 
         private BigInteger n;
         private const int MIN_FROM = 3;
