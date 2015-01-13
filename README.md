@@ -31,7 +31,7 @@ How to test it
 ==================
 Open a PowerShell window, go to the bin/Debug folder in Primen's project and run 
 ```PowerShell
-mpiexec.exe -n N Primen.exe K
+mpiexec -n N Primen.exe K
 ```
 Where N is the number of processes that you want to create and K is the key to factorize.
 
