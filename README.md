@@ -22,7 +22,7 @@ mpiexec -hosts N machine1 machine2 machineN C:\directory\when\it\was\unzipped\Pr
 ```
 Where N is the number of hosts and K is the key to factorize.
 
-For example, if you have 2 hosts called mOne and mTwo, the directory when you unzipped Primen is "C:\Primen" and you wants to factorize 1000, you have to type
+For example, if you have 2 hosts called mOne and mTwo, the directory when you unzipped Primen is "C:\Primen" and you want to factorize 1000, you have to type
 ```PowerShell
 mpiexec -hosts 2 mOne mTwo C:\Primen\Primen.exe 1000
 ```
