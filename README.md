@@ -1,6 +1,6 @@
 Primen
 ======
-Primen is an educational software written in C# that implements prime factorization (using trial division)
+Primen is an educational software that implements prime factorization (using trial division)
 with distributed computing (using MPI.NET)
 and parallel computing (using System.Threading.Tasks).
 
