@@ -27,7 +27,7 @@ For example, if you have 2 hosts called mOne and mTwo, the directory when you un
 mpiexec -hosts 2 mOne mTwo C:\Primen\Primen.exe 1000
 ```
 
-How to use it
+How to test it
 ==================
 Open a PowerShell window, go to the bin/Debug folder in Primen's project and run 
 ```PowerShell
