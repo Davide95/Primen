@@ -1,6 +1,6 @@
 Primen
 ======
-Primen is an educational software written in C# that implements prime factorization (using trial division)
+Primen is an educational software that implements prime factorization (using trial division)
 with distributed computing (using MPI.NET)
 and parallel computing (using System.Threading.Tasks).
 
@@ -31,9 +31,8 @@ How to test it
 ==================
 Open a PowerShell window, go to the bin/Debug folder in Primen's project and run 
 ```PowerShell
-mpiexec -n N Primen.exe K
+.\Scripts\debug.ps1
 ```
-Where N is the number of processes that you want to create and K is the key to factorize.
 
 How to Engage, Contribute and Provide Feedback
 ==================
