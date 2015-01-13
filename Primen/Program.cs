@@ -33,9 +33,13 @@ namespace Primen
                 }
                 catch(ArithmeticException)
                 {
-                    Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
-                        Resources.Error113, key));
-                    Communicator.world.Abort(113);
+                    if (Communicator.world.Rank == ROOT_RANK)
+                    {
+                        Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
+                            Resources.Error113, key));
+
+                        Communicator.world.Abort(113);
+                    }
                 }
 
                 if (Communicator.world.Rank == ROOT_RANK)
@@ -48,12 +52,9 @@ namespace Primen
                     Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
                        Resources.TimeElapsedMessage, swFactorization.Elapsed));
                 }
-
-#if DEBUG
-                Console.ReadLine();
-#endif
-
-                Communicator.world.Abort(0);
+                
+                if (Communicator.world.Rank == ROOT_RANK)
+                    Communicator.world.Abort(NO_ERROR_CODE);
             }
         }
 
@@ -93,6 +94,7 @@ namespace Primen
                 { 
                     Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
                         Resources.Error112, args[1]));
+
                     Communicator.world.Abort(112);
                 }
             }
@@ -106,5 +108,8 @@ namespace Primen
         /// The key position in the command line arguments array.
         /// </summary>
         private const int KEY_POSITION = 1;
+
+        /// <summary>The error code thrown when the program has finished without errors.</summary>
+        private const int NO_ERROR_CODE = 0;
     }
 }
