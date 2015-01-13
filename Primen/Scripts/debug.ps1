@@ -1,7 +1,13 @@
-$insertNumberOfProcessesMessage = "Number of processes: "
-$insertKeyeMessage = "Key to factorize: "
+param(
+    [string]$file = 'Primen.exe',
+    [int]$numberOfProcesses = (Read-Host 'Number of processes: '),
+    [System.Numerics.BigInteger]$key = (Read-Host 'Key to factorize: ')
+)
 
-[int]$numberOfProcesses = Read-Host $insertNumberOfProcessesMessage
-[System.Numerics.BigInteger] $key = Read-Host $insertKeyeMessage
+$Error211 = "Error 211: ""$file"" is not found."
 
-mpiexec -n "$numberOfProcesses" Primen.exe "$key"
+if(-Not (Test-Path $file)) {
+    write $ERROR_211
+} else {
+    mpiexec -n "$numberOfProcesses" "$file" "$key"
+}
