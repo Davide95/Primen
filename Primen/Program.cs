@@ -18,98 +18,90 @@ namespace Primen
 
                 WelcomeMessage();
 
-                var key = readKey();
-                var trialDivision = new TrialDivision(key);
-
-                BigInteger factor = TrialDivision.NOT_VALID_FACTOR;
-                Stopwatch swFactorization = null;
-
-                if (Communicator.world.Rank == ROOT_RANK)
-                    swFactorization = Stopwatch.StartNew();
-
-                try
+                while(true)
                 {
-                    factor = trialDivision.Factorization();
-                }
-                catch(ArithmeticException)
-                {
+                    BigInteger key = ReadKey();
+
+                    var trialDivision = new TrialDivision(key);
+
+                    BigInteger factor = TrialDivision.NOT_VALID_FACTOR;
+
+                    Stopwatch swFactorization = null;
                     if (Communicator.world.Rank == ROOT_RANK)
+                        swFactorization = Stopwatch.StartNew();
+
+                    try
                     {
-                        Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
-                            Resources.Error113, key));
+                        factor = trialDivision.Factorization();
 
-                        Communicator.world.Abort(113);
+                        if (Communicator.world.Rank == ROOT_RANK)
+                        {
+                            swFactorization.Stop();
+
+                            Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
+                                Resources.FactorizationCompletedMessage, factor, key / factor));
+
+                            Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
+                                Resources.TimeElapsedMessage, swFactorization.Elapsed));
+
+                            Console.WriteLine();
+                        }
                     }
+                    catch(ArithmeticException)
+                    {
+                        Console.WriteLine(String.Format(
+                            CultureInfo.CurrentCulture, Resources.Error111Message));
+                    }
+
+                    Communicator.world.Barrier();
                 }
-
-                if (Communicator.world.Rank == ROOT_RANK)
-                {
-                    swFactorization.Stop();
-
-                    Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
-                       Resources.FactorizationCompletedMessage, factor, key / factor));
-
-                    Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
-                       Resources.TimeElapsedMessage, swFactorization.Elapsed));
-                }
-                
-                if (Communicator.world.Rank == ROOT_RANK)
-                    Communicator.world.Abort(NO_ERROR_CODE);
             }
         }
 
-        /// <summary>
-        /// Shows a welcome message with informations about the MPI world.
-        /// </summary>
         private static void WelcomeMessage()
         {
-            Console.WriteLine(
-                    String.Format(CultureInfo.CurrentCulture, Resources.WelcomeMessage
-                    , Communicator.world.Rank, MPI.Environment.ProcessorName));
+            Console.WriteLine(String.Format(
+                        CultureInfo.CurrentCulture, Resources.WelcomeMessage, 
+                        Communicator.world.Rank, MPI.Environment.ProcessorName));
+
+            Communicator.world.Barrier();
 
             if (Communicator.world.Rank == ROOT_RANK)
-                Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
-                    Resources.NumberOfProcessesMessage, Communicator.world.Size));
+            {
+                Console.WriteLine(String.Format(
+                    CultureInfo.CurrentCulture, Resources.NumberOfProcessesMessage,
+                    Communicator.world.Size));
+                Console.WriteLine();
+            }
         }
 
-        /// <summary>Read the key to factorize from the command line arguments.</summary>
-        /// <returns>Returns the key to factorize.</returns>
-        private static BigInteger readKey()
+        private static BigInteger ReadKey()
         {
-            string[] args = System.Environment.GetCommandLineArgs();
+            var key = BigInteger.Zero;
 
-            if (args.Length < (KEY_POSITION + 1))
+            if(Communicator.world.Rank == ROOT_RANK)
             {
-                if (Communicator.world.Rank == ROOT_RANK)
+                bool isValid = false;
+                do
                 {
-                    Console.WriteLine(Resources.Error111);
-                    Communicator.world.Abort(111);
-                }
+                    Console.Write(Resources.InsertKeyMessage);
+                    string input = Console.ReadLine();
+
+                    if(BigInteger.TryParse(input, out key))
+                        isValid = true;
+
+                    else if (String.IsNullOrEmpty(input))
+                        Communicator.world.Abort(NO_ERRORS);
+
+                } while(!isValid);
             }
 
-            BigInteger key;
-            if (!BigInteger.TryParse(args[KEY_POSITION], out key))
-            {
-                if (Communicator.world.Rank == ROOT_RANK)
-                { 
-                    Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
-                        Resources.Error112, args[1]));
-
-                    Communicator.world.Abort(112);
-                }
-            }
-
+            Communicator.world.Broadcast(ref key, ROOT_RANK);
             return key;
         }
 
         public const int ROOT_RANK = 0;
 
-        /// <summary>
-        /// The key position in the command line arguments array.
-        /// </summary>
-        private const int KEY_POSITION = 1;
-
-        /// <summary>The error code thrown when the program has finished without errors.</summary>
-        private const int NO_ERROR_CODE = 0;
+        private const int NO_ERRORS = 0;
     }
 }

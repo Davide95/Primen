@@ -61,29 +61,11 @@ namespace Primen.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error 111: Insert a valid key as a parameter..
+        ///   Looks up a localized string similar to {0} can&apos;t be factorized..
         /// </summary>
-        internal static string Error111 {
+        internal static string Error111Message {
             get {
-                return ResourceManager.GetString("Error111", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error 112: &quot;{0}&quot; is not an integer number..
-        /// </summary>
-        internal static string Error112 {
-            get {
-                return ResourceManager.GetString("Error112", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error 113: &quot;{0}&quot; can&apos;t be factorized..
-        /// </summary>
-        internal static string Error113 {
-            get {
-                return ResourceManager.GetString("Error113", resourceCulture);
+                return ResourceManager.GetString("Error111Message", resourceCulture);
             }
         }
         
@@ -93,6 +75,15 @@ namespace Primen.Properties {
         internal static string FactorizationCompletedMessage {
             get {
                 return ResourceManager.GetString("FactorizationCompletedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert a valid key to factorize (press ENTER to exit): .
+        /// </summary>
+        internal static string InsertKeyMessage {
+            get {
+                return ResourceManager.GetString("InsertKeyMessage", resourceCulture);
             }
         }
         
@@ -115,7 +106,7 @@ namespace Primen.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hello, my rank is {0} and I&apos;m running on {1}..
+        ///   Looks up a localized string similar to The rank {0} is running on {1}..
         /// </summary>
         internal static string WelcomeMessage {
             get {
