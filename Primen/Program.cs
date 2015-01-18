@@ -29,7 +29,7 @@ namespace Primen
                     Stopwatch swFactorization = null;
                     if (Communicator.world.Rank == ROOT_RANK)
                         swFactorization = Stopwatch.StartNew();
-
+                        
                     try
                     {
                         factor = trialDivision.Factorization();

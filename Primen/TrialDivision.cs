@@ -5,25 +5,14 @@ using System.Threading.Tasks;
 
 namespace Primen
 {
-    /// <summary>
-    /// Implements trial division, an integer factorization algorithm.
-    /// </summary>
     internal class TrialDivision
     {
-        /// <summary>
-        /// Initializes a new instance of the <c>TrialDivision</c> class.
-        /// </summary>
-        /// <param name="key">The product of two prime numbers.</param>
         public TrialDivision(BigInteger key)
         {
-            // Internal, it manages the key as a positive integer.
             n = BigInteger.Abs(key);
+            isFinished = !IS_FINISHED;
         }
 
-        /// <summary>
-        /// Factorizes the key.
-        /// </summary>
-        /// <returns>If it is the root rank returns one factor, otherwise 0.</returns>
         public BigInteger Factorization()
         {
             // Zero and one can't be factorized.
@@ -41,15 +30,17 @@ namespace Primen
                 return BigInteger.One;
             
             if (Communicator.world.Size == 1)
-                return ParallelFactorization(MIN_FROM, n.Sqrt());
-            
+            {
+                if (Communicator.world.Rank == Program.ROOT_RANK)
+                    return ParallelFactorization(MIN_FROM, n.Sqrt());
+
+                else
+                    return NOT_VALID_FACTOR;
+            }
+                
             return MpiFactorization();
         }
 
-        /// <summary>
-        /// Uses <c>MPI.NET</c> to support parallel computing.
-        /// </summary>
-        /// <returns>If it is the root rank returns one factor, otherwise 0.</returns>
         private BigInteger MpiFactorization()
         {
             var sqrtOfN = n.Sqrt();
@@ -76,39 +67,41 @@ namespace Primen
                 {
                     BigIntegerSerializable factorS;
                     Communicator.world.Receive<BigIntegerSerializable>(
-                        MPI.Communicator.anySource, MPI.Communicator.anyTag, out factorS);
+                        MPI.Communicator.anySource, FACTOR_TAG, out factorS);
 
                     BigInteger factor = factorS;
                     if (!factor.IsOne)
+                    {
+                        for (int rank = Program.ROOT_RANK + 1; rank < Communicator.world.Size; rank++)
+                            Communicator.world.ImmediateSend(IS_FINISHED, rank, STOP_TAG);
+
                         return factor;
+                    }
 
                     worldSize--;
-                } while (worldSize == 0);
+                } while (worldSize != 0);
 
                 // If there aren't factor, it is prime.
                 return BigInteger.One;
             }
             else
             {
+                // Check if someone has found one factor
+                isFinished = !IS_FINISHED;
+                Task.Run( () => {
+                    isFinished = Communicator.world.Receive<bool>(Program.ROOT_RANK, STOP_TAG);
+                });
+
                 var from = (myRank == Program.ROOT_RANK) ? MIN_FROM : (myRank * blockSize);
                 var to = (myRank == worldSize - 1) ? (sqrtOfN-1) : ((myRank + 1) * blockSize);
 
-                Communicator.world.Send((BigIntegerSerializable)ParallelFactorization(from, to), 0, 0);
+                Communicator.world.Send((BigIntegerSerializable)ParallelFactorization(from, to), 0, FACTOR_TAG);
 
                 // Only root rank know the result.
                 return BigInteger.Zero;
             }
         }
 
-        /// <summary>
-        /// Uses <c>Parallel.For</c> to support tasks parallelization.
-        /// </summary>
-        /// <param name="from">The start index, inclusive.</param>
-        /// <param name="to">The end index, exclusive.</param>
-        /// <returns>Returns one factor.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// Thrown when from < MIN_FROM, or from > to, or to > n.
-        /// </exception>
         private BigInteger ParallelFactorization(BigInteger from, BigInteger to)
         {
             if (from < MIN_FROM)
@@ -139,25 +132,14 @@ namespace Primen
             return factor;
         }
 
-        /// <summary>Check if there is a factor in [<c>from</c>; <c>to</c>] range.</summary>
-        /// <param name="from">The start index, inclusive.</param>
-        /// <param name="to">The end index, inclusive.</param>
-        /// <returns>Returns one factor.</returns>
         private BigInteger Factorization(BigInteger from, BigInteger to)
         {
             ParallelLoopState fakeLoop = null;
             return Factorization(from, to, ref fakeLoop);
         }
 
-        /// <summary>Check if there is a factor in [<c>from</c>; <c>to</c>] range.</summary>
-        /// <param name="from">The start index, inclusive.</param>
-        /// <param name="to">The end index, inclusive.</param>
-        /// <param name="loopState">The <c>ParallelLoopState</c> of the main <c>Parallel.For</c>.</param>
-        /// <returns>Returns one factor.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// Thrown when from < MIN_FROM, or from > to, or to > n.
-        /// </exception>
-        private BigInteger Factorization(BigInteger from, BigInteger to, ref ParallelLoopState loopState)
+        private BigInteger Factorization(BigInteger from, BigInteger to,
+            ref ParallelLoopState loopState)
         {
             if (from < MIN_FROM)
                 throw new ArgumentOutOfRangeException("from");
@@ -168,11 +150,15 @@ namespace Primen
 
             while(from <= to)
             {
-                // If it is stopped, returns 0.
+                // If the parallel loop is stopped, it returns 0.
                 if ((loopState != null) && (loopState.IsStopped))
                     return BigInteger.Zero;
 
-                else if((n % from).IsZero)
+                // If someone has found one factor, all ranks have to stop.
+                if (isFinished)
+                    return BigInteger.Zero;
+
+                if((n % from).IsZero)
                 {
                     if(loopState != null)
                         loopState.Stop();
@@ -183,13 +169,18 @@ namespace Primen
                 from += 2;
             }
 
-            // If it didn't find any factor, returns 1.
+            // If it didn't find any factor, it returns 1.
             return BigInteger.One;
         }
 
         public const int NOT_VALID_FACTOR = 0;
 
         private BigInteger n;
+        private bool isFinished;
         private const int MIN_FROM = 3;
+
+        private const int FACTOR_TAG = 1;
+        private const int STOP_TAG = 2;
+        private const bool IS_FINISHED = true;
     }
 }
