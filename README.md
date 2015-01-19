@@ -23,7 +23,7 @@ mpiexec -hosts N machine1 machine2 machineN C:\directory\when\it\was\unzipped\Pr
 
 For example, if you have 2 hosts called mOne and mTwo and the directory where you unzipped Primen is "C:\Primen", you have to type
 ```PowerShell
-mpiexec -hosts 2 mOne mTwo C:\Primen\Primen.exe 1000
+mpiexec -hosts 2 mOne mTwo C:\Primen\Primen.exe
 ```
 
 How to test it
