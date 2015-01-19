@@ -61,15 +61,6 @@ namespace Primen.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} can&apos;t be factorized..
-        /// </summary>
-        internal static string Error111Message {
-            get {
-                return ResourceManager.GetString("Error111Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Factors: ({0}; {1})..
         /// </summary>
         internal static string FactorizationCompletedMessage {

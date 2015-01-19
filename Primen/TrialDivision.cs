@@ -86,11 +86,11 @@ namespace Primen
             }
             else
             {
-                // Check if someone has found one factor
-                isFinished = !IS_FINISHED;
-                Task.Run( () => {
+                Task.Run(() =>
+                {
                     isFinished = Communicator.world.Receive<bool>(Program.ROOT_RANK, STOP_TAG);
                 });
+                
 
                 var from = (myRank == Program.ROOT_RANK) ? MIN_FROM : (myRank * blockSize);
                 var to = (myRank == worldSize - 1) ? (sqrtOfN-1) : ((myRank + 1) * blockSize);
@@ -98,7 +98,7 @@ namespace Primen
                 Communicator.world.Send((BigIntegerSerializable)ParallelFactorization(from, to), 0, FACTOR_TAG);
 
                 // Only root rank know the result.
-                return BigInteger.Zero;
+                return NOT_VALID_FACTOR;
             }
         }
 
@@ -152,11 +152,11 @@ namespace Primen
             {
                 // If the parallel loop is stopped, it returns 0.
                 if ((loopState != null) && (loopState.IsStopped))
-                    return BigInteger.Zero;
+                    return NOT_VALID_FACTOR;
 
                 // If someone has found one factor, all ranks have to stop.
                 if (isFinished)
-                    return BigInteger.Zero;
+                    return NOT_VALID_FACTOR;
 
                 if((n % from).IsZero)
                 {

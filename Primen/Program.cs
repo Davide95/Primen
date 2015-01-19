@@ -24,7 +24,7 @@ namespace Primen
 
                     var trialDivision = new TrialDivision(key);
 
-                    BigInteger factor = TrialDivision.NOT_VALID_FACTOR;
+                    BigInteger factor;
 
                     Stopwatch swFactorization = null;
                     if (Communicator.world.Rank == ROOT_RANK)
@@ -33,24 +33,23 @@ namespace Primen
                     try
                     {
                         factor = trialDivision.Factorization();
-
-                        if (Communicator.world.Rank == ROOT_RANK)
-                        {
-                            swFactorization.Stop();
-
-                            Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
-                                Resources.FactorizationCompletedMessage, factor, key / factor));
-
-                            Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
-                                Resources.TimeElapsedMessage, swFactorization.Elapsed));
-
-                            Console.WriteLine();
-                        }
                     }
                     catch(ArithmeticException)
                     {
-                        Console.WriteLine(String.Format(
-                            CultureInfo.CurrentCulture, Resources.Error111Message));
+                        factor = key;
+                    }
+
+                    if (Communicator.world.Rank == ROOT_RANK)
+                    {
+                        swFactorization.Stop();
+
+                        Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
+                                Resources.FactorizationCompletedMessage, factor, key / factor));
+
+                        Console.WriteLine(String.Format(CultureInfo.CurrentCulture,
+                            Resources.TimeElapsedMessage, swFactorization.Elapsed));
+
+                        Console.WriteLine();
                     }
 
                     Communicator.world.Barrier();
