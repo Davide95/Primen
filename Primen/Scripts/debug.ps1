@@ -1,5 +1,5 @@
 Param(
-    [int]$numberOfVirtualNodes = (Read-Host 'Number of virtual nodes: '),
+    [int]$numberOfVirtualNodes = (Read-Host 'Number of virtual nodes'),
     [string]$file = 'Primen.exe'
 )
 
