@@ -99,6 +99,9 @@ namespace Primen
                     if (String.IsNullOrEmpty(input))
                         Communicator.world.Abort(NO_ERRORS);
 
+                    input = input.Trim();
+                    EasterEgg(input);
+
                 } while(!BigInteger.TryParse(input, out key));
             }
 
@@ -106,6 +109,14 @@ namespace Primen
             Communicator.world.Broadcast(ref key, ROOT_RANK);
 
             return key;
+        }
+
+        // I am not sure if we need this, but too scared to delete.
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Console.WriteLine(System.String)")]
+        private static void EasterEgg(string key)
+        {
+            if(key == Resources.RSA2048)
+                Console.WriteLine("Only God and RSA Laboratories knew the result. Now, God only knows.");
         }
 
         public const int ROOT_RANK = 0;
