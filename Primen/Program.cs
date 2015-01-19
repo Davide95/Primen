@@ -57,6 +57,9 @@ namespace Primen
             }
         }
 
+        /// <summary>
+        /// Shows info about the MPI world.
+        /// </summary>
         private static void WelcomeMessage()
         {
             Console.WriteLine(String.Format(
@@ -74,33 +77,38 @@ namespace Primen
             }
         }
 
+        /// <summary>
+        /// Reads the key from the standard input stream.
+        /// </summary>
+        /// <remarks>
+        /// If the standard input stream is empty it aborts all ranks.
+        /// </remarks>
+        /// <returns>Returns a valid key.</returns>
         private static BigInteger ReadKey()
         {
+            string input;
             var key = BigInteger.Zero;
 
             if(Communicator.world.Rank == ROOT_RANK)
             {
-                bool isValid = false;
                 do
                 {
                     Console.Write(Resources.InsertKeyMessage);
-                    string input = Console.ReadLine();
+                    input = Console.ReadLine();
 
-                    if(BigInteger.TryParse(input, out key))
-                        isValid = true;
-
-                    else if (String.IsNullOrEmpty(input))
+                    if (String.IsNullOrEmpty(input))
                         Communicator.world.Abort(NO_ERRORS);
 
-                } while(!isValid);
+                } while(!BigInteger.TryParse(input, out key));
             }
 
+            // It sends the key to all ranks.
             Communicator.world.Broadcast(ref key, ROOT_RANK);
+
             return key;
         }
 
         public const int ROOT_RANK = 0;
-
         private const int NO_ERRORS = 0;
     }
 }
