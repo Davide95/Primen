@@ -52,6 +52,7 @@ namespace Primen
                         Console.WriteLine();
                     }
 
+                    GC.Collect();
                     Communicator.world.Barrier();
                 }
             }
