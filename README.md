@@ -10,7 +10,7 @@ How to use it
 ==================
 Before using it, you have to install:
 * [Windows HPC Server 2008](http://www.microsoft.com/en-us/download/details.aspx?id=6847).
-* [MPI.NET Runtime](http://www.osl.iu.edu/research/mpi.net/files/1.0.0/MPI.NET%20Runtime.msi) in production or [MPI.NET SDK](http://www.osl.iu.edu/research/mpi.net/files/1.0.0/MPI.NET%20SDK.msi) for developing.
+* [MPI.NET Runtime](http://www.osl.iu.edu/research/mpi.net/files/1.0.0/MPI.NET%20Runtime.msi) in production or [MPI.NET SDK](http://www.osl.iu.edu/research/mpi.net/files/1.0.0/MPI.NET%20SDK.msi) for development.
 
 Then download the last Primen relase from https://github.com/Davide95/Primen/releases, unzip it and start on each machine 
 ```PowerShell
@@ -18,7 +18,7 @@ smpd -d
 ```
 After this, go to one of the machines and run
 ```PowerShell
-mpiexec -hosts N machine1 machine2 machineN C:\directory\when\it\was\unzipped\Primen.exe
+mpiexec -hosts N machine1 machine2 machineN C:\directory\where\it\was\unzipped\Primen.exe
 ```
 
 For example, if you have 2 hosts called mOne and mTwo and the directory where you unzipped Primen is "C:\Primen", you have to type
