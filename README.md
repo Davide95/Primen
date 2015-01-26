@@ -18,7 +18,7 @@ smpd -d
 ```
 After this, go to one of the machines and run
 ```PowerShell
-mpiexec -hosts N machine1 machine2 machineN C:\directory\where\it\was\unzipped\Primen.exe
+mpiexec -hosts N machine1 machine2 machineN 'C:\directory\where\it\was\unzipped\Primen.exe'
 ```
 
 For example, if you have 2 hosts called mOne and mTwo and the directory where you unzipped Primen is "C:\Primen", you have to type
