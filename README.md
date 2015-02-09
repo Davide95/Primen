@@ -33,6 +33,12 @@ Open a PowerShell window, go to the bin/Debug folder in Primen's project and run
 .\Scripts\debug.ps1
 ```
 
+Benchmark
+==================
+I ran this software on 24 PCs connected eatch other through a switch in a classic LAN. They factorized 4951760154835678088235319297 (94 bits) in about 5 minutes.
+
+
+
 How to Engage, Contribute and Provide Feedback
 ==================
 1. If you want to contribute, make sure that there is a corresponding issue for your change first. If there is none, create one.
