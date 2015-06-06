@@ -4,22 +4,24 @@ Primen is an educational software that implements prime factorization (using tri
 with distributed computing (using MPI.NET)
 and parallel computing (using System.Threading.Tasks).
 
-For example Primen can factorize a product of two prime numbers in order to obtain an RSA private key from a public key.
+For instance Primen can factorize a product of two prime numbers in order to obtain an RSA private key from a public key.
 
 How to use it
 ==================
-Before using it, you have to install:
+Before using it, you need to install:
 * [Windows HPC Server 2008](http://www.microsoft.com/en-us/download/details.aspx?id=6847).
 * [MPI.NET Runtime](http://www.osl.iu.edu/research/mpi.net/files/1.0.0/MPI.NET%20Runtime.msi) in production or [MPI.NET SDK](http://www.osl.iu.edu/research/mpi.net/files/1.0.0/MPI.NET%20SDK.msi) for development.
 
-Then download the last Primen relase from https://github.com/Davide95/Primen/releases, unzip it and start on each machine 
+Then download the latest Primen release from https://github.com/Davide95/Primen/releases, unzip it and start smpd on each machine typing
 ```PowerShell
 smpd -d
 ```
-After this, go to one of the machines and run
+Afterwards  run
 ```PowerShell
 mpiexec -hosts N machine1 machine2 machineN 'C:\directory\where\it\was\unzipped\Primen.exe'
 ```
+on one of the machines.
+
 
 For example, if you have 2 hosts called mOne and mTwo and the directory where you unzipped Primen is "C:\Primen", you have to type
 ```PowerShell
@@ -35,7 +37,7 @@ Open a PowerShell window, go to the bin/Debug folder in Primen's project and run
 
 Benchmark
 ==================
-I ran this software on 24 PCs connected eatch other through a switch in a classic LAN. They factorized 4951760154835678088235319297 (94 bits) in about 5 minutes.
+I ran this software on 24 PCs connected to eatch other through a switch in a classic LAN. They factorized 4951760154835678088235319297 (94 bits) in about 5 minutes.
 
 
 
